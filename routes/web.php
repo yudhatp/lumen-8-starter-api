@@ -55,24 +55,28 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/{id}', ['uses' => 'StatusController@update']);
     });
 
-    //transaction
-    $router->group(['prefix' => 'transaction'], function () use ($router) {
-        $router->get('/',  ['uses' => 'TransactionController@index']);
-        $router->post('/', ['uses' => 'TransactionController@create']);
-        $router->get('/{nota}',  ['uses' => 'TransactionController@detail']);
+    //order
+    $router->group(['prefix' => 'order'], function () use ($router) {
+        $router->get('/',  ['uses' => 'OrderController@index']);
+        $router->post('/', ['uses' => 'OrderController@create']);
+        $router->get('/{order_number}',  ['uses' => 'OrderController@detail']);
         //$router->delete('/{id}', ['uses' => 'TransactionController@delete']);
-        $router->put('/{id}', ['uses' => 'TransactionController@update']);
+        $router->put('/{id}', ['uses' => 'OrderController@update']);
+
+        //detail order
+        $router->get('/{order_number}/detail-item',  ['uses' => 'OrderController@detailItem']);
+        $router->post('/create-detail',  ['uses' => 'OrderController@createDetail']);
     });
 
     $router->post('hapus-transaction', ['uses' => 'TransactionController@delete']);
     $router->post('hapus-transaction-detail', ['uses' => 'TransactionController@deleteDetail']);
-    $router->post('hapus-transaction-status', ['uses' => 'TransactionController@deleteStatus']);
-    $router->get('transaction-total-pendapatan',  ['uses' => 'TransactionController@totalPendapatan']);
+    //$router->post('hapus-transaction-status', ['uses' => 'TransactionController@deleteStatus']);
+    //$router->get('transaction-total-pendapatan',  ['uses' => 'TransactionController@totalPendapatan']);
     $router->get('transaction-selesai',  ['uses' => 'TransactionController@selesai']);
     $router->get('transaction-belum-selesai',  ['uses' => 'TransactionController@belumSelesai']);
-    $router->get('transaction-detail-status/{nota}',  ['uses' => 'TransactionController@detailStatus']);
-    $router->post('transaction-create-status',  ['uses' => 'TransactionController@createStatus']);
+    //$router->get('transaction-detail-status/{nota}',  ['uses' => 'TransactionController@detailStatus']);
+    //$router->post('transaction-create-status',  ['uses' => 'TransactionController@createStatus']);
 
-    $router->get('transaction-detail/{nota}',  ['uses' => 'TransactionController@detailItem']);
-    $router->post('transaction-create-detail',  ['uses' => 'TransactionController@createDetail']);
+    
+    
 });

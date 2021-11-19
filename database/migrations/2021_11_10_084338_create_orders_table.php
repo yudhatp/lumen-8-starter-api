@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('order_number');
+            $table->string('order_number');
             $table->date('order_date');
             $table->double('total_qty');
             $table->float('total_price', 8, 2);

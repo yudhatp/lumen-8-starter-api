@@ -14,7 +14,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
 
-    protected function jwt($user) {
+    /*protected function jwt($user) {
         //$credentials = request(['email', 'password']);
 
         //$tokenWithCustom = auth('api')->attempt($credentials);
@@ -36,7 +36,7 @@ class Controller extends BaseController
             'sub' => $user->cnomr,
         ]);
         $payload = $factory->make();*/
-        $token = JWTAuth::encode($payload);
+        //$token = JWTAuth::encode($payload);
         //$payload = JWTFactory::make($credentials + ['sub' => json_encode($credentials)]);
 
         // As you can see we are passing `JWT_SECRET` as the second parameter that will 
@@ -46,24 +46,14 @@ class Controller extends BaseController
 
         //$token = JWTAuth::fromUser($user);
 
-        return $token;
-    }
+        //return $token;
+    //}*/
 
     protected function respondWithToken($token, $user)
     {
-        /*
-        
-            'nomr' => $user->cnomr,
-            'nama' => $user->cnmpasien,
-            'alamat' => $user->calamat1,
-            'tgllahir' => $user->dtglahir,
-            'jekel' => $user->cketkelami,
-            'kategori' => $user->cketktgori,
-            'nobpjs' => $user->nobpjs,
-            */
         return response()->json([
             'token' => $token,
-            'nama'  => $user->nama,
+            'name'  => $user->name,
             'email' => $user->email,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60
