@@ -62,14 +62,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/{order_number}',  ['uses' => 'OrderController@detail']);
         //$router->delete('/{id}', ['uses' => 'TransactionController@delete']);
         $router->put('/{id}', ['uses' => 'OrderController@update']);
+        $router->post('delete', ['uses' => 'OrderController@delete']);
 
         //detail order
         $router->get('/{order_number}/detail-item',  ['uses' => 'OrderController@detailItem']);
         $router->post('/create-detail',  ['uses' => 'OrderController@createDetail']);
+        $router->post('/delete-detail', ['uses' => 'OrderController@deleteDetail']);
     });
 
-    $router->post('hapus-transaction', ['uses' => 'TransactionController@delete']);
-    $router->post('hapus-transaction-detail', ['uses' => 'TransactionController@deleteDetail']);
     //$router->post('hapus-transaction-status', ['uses' => 'TransactionController@deleteStatus']);
     //$router->get('transaction-total-pendapatan',  ['uses' => 'TransactionController@totalPendapatan']);
     $router->get('transaction-selesai',  ['uses' => 'TransactionController@selesai']);

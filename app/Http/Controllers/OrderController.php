@@ -20,7 +20,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        return response()->json(Order::all());
+        return response()->json(Order::latest()->get());
     }
 
     public function detail($order_number)
@@ -61,21 +61,43 @@ class OrderController extends Controller
 
     public function createDetail(Request $request)
     {
+        //get category name & recent price
         $category = Category::where('id',$request->id_category)->get(['price','category_name']);
-        
-        $order = new OrderDetail;
-        $order->order_number = $request->order_number;
-        $order->category_name = $category[0]->category_name;
-        $order->price = $category[0]->price;
-        $order->qty = $request->qty;
-        $order->subtotal = ($category[0]->price * $request->qty);
-        $order->save();
 
+        //check if category already exist
+        $items = OrderDetail::where('order_number', $request->order_number)
+                            ->where('category_name', $category[0]->category_name)
+                            ->get(['price','qty']);
+        
+        if(count($items) > 0){
+            //update detail
+            OrderDetail::where('order_number',$request->order_number)
+                        ->where('category_name', $category[0]->category_name)
+                        ->update([
+                            'qty' => $items[0]->qty + 1, 
+                            'subtotal' => ($items[0]->price * ($items[0]->qty + 1))
+                        ]);
+        }else{
+            //create new detail
+            $order = new OrderDetail;
+            $order->order_number = $request->order_number;
+            $order->category_name = $category[0]->category_name;
+            $order->price = $category[0]->price;
+            $order->qty = $request->qty;
+            $order->subtotal = ($category[0]->price * $request->qty);
+            $order->save();
+        }
+
+        //calculate summary orders
         $total_price = OrderDetail::where('order_number',$request->order_number)->sum('subtotal');
         $qty = OrderDetail::where('order_number',$request->order_number)->sum('qty');
         
-        Order::where('order_number',$request->order_number)->update(
-            ['total_price' => $total_price, 'total_qty' => $qty]);
+        Order::where('order_number',$request->order_number)
+             ->update([
+                 'total_price' => $total_price, 
+                 'total_qty' => $qty
+            ]);
+
         return response()->json([
             'message'   =>'ok'
         ], 200);
@@ -84,8 +106,8 @@ class OrderController extends Controller
     
     public function delete(Request $request)
     {
-        OrderDetail::where('order_number',$request->no)->delete();
-        Order::where('order_number',$request->no)->delete();
+        OrderDetail::where('order_number',$request->order_number)->delete();
+        Order::where('order_number',$request->order_number)->delete();
         return response()->json(['message'=>'ok'], 200);
     }
 
@@ -93,11 +115,14 @@ class OrderController extends Controller
     {
         OrderDetail::where('id',$request->id)->delete();
 
-        $total_price = OrderDetail::where('order_number',$request->no)->sum('subtotal');
-        $qty = OrderDetail::where('order_number',$request->no)->sum('qty');
+        $total_price = OrderDetail::where('order_number',$request->order_number)->sum('subtotal');
+        $qty = OrderDetail::where('order_number',$request->order_number)->sum('qty');
 
-        Order::where('order_number',$request->no)
-            ->update(['total_price' => $total_price,'qty' => $qty]);
+        Order::where('order_number',$request->order_number)
+             ->update([
+                 'total_price' => $total_price,
+                 'total_qty' => $qty
+            ]);
         return response()->json(['message'=>'ok'], 200);
     }
 }
