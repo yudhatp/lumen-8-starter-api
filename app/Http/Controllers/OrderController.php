@@ -34,16 +34,6 @@ class OrderController extends Controller
         return response()->json(OrderDetail::where('order_number',$order_number)->orderBy('id','asc')->get());
     }
 
-    public function belumSelesai()
-    {
-        return response()->json(Order::whereRaw("status not in('Lunas','Batal')")->get());
-    }
-
-    public function selesai()
-    {
-        return response()->json(Order::whereRaw("status ='Lunas'")->orderBy('tgl_selesai')->get());
-    }
-
     public function create(Request $request)
     {
         $order = new Order;
