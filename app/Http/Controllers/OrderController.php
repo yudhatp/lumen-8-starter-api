@@ -18,9 +18,9 @@ class OrderController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index($skip)
     {
-        return response()->json(Order::latest()->get());
+        return response()->json(Order::orderBy('order_number')->skip($skip)->take(4)->get());
     }
 
     public function detail($order_number)
@@ -29,6 +29,12 @@ class OrderController extends Controller
         return response()->json($data[0]);
     }
 
+    public function searchOrder($order_number)
+    {
+        $data = Order::where('order_number','like',$order_number.'%')->get();
+        return response()->json($data);
+    }
+    
     public function detailItem($order_number)
     {
         return response()->json(OrderDetail::where('order_number',$order_number)->orderBy('id','asc')->get());

@@ -39,11 +39,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     //order
     $router->group(['prefix' => 'order'], function () use ($router) {
-        $router->get('/',  ['uses' => 'OrderController@index']);
+        $router->get('/{skip}/index',  ['uses' => 'OrderController@index']);
         $router->post('/', ['uses' => 'OrderController@create']);
         $router->get('/{order_number}',  ['uses' => 'OrderController@detail']);
         $router->put('/{id}', ['uses' => 'OrderController@update']);
         $router->post('delete', ['uses' => 'OrderController@delete']);
+        $router->get('/{order_number}/search',  ['uses' => 'OrderController@searchOrder']);
 
         //detail order
         $router->get('/{order_number}/detail-item',  ['uses' => 'OrderController@detailItem']);
