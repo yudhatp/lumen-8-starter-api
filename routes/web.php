@@ -18,7 +18,6 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'api'], function () use ($router) {
     
     $router->post('login', 'AuthController@login');
-    $router->post('register', 'AuthController@register');
 
     //password reset
     $router->group(['prefix' => 'password'], function () use ($router) {
@@ -52,6 +51,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/delete-detail', ['uses' => 'OrderController@deleteDetail']);
     });
 
+    //dashboard
     $router->group(['prefix' => 'dashboard'], function () use ($router) {
         $router->get('/recent-order',  ['uses' => 'DashboardController@recentOrder']);
         $router->get('/total-order',  ['uses' => 'DashboardController@totalOrder']);
