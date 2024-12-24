@@ -5,13 +5,13 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.2.5",
+        "php": "^8.0",
         "guzzlehttp/guzzle": "^7.2",
-        "illuminate/mail": "^8.49",
-        "illuminate/notifications": "^8.49",
-        "laravel/lumen-framework": "^8.0",
+        "illuminate/mail": "^10.0",
+        "illuminate/notifications": "^10.0",
+        "laravel/lumen-framework": "^10.0",
         "ramsey/uuid": "^4.1",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",
